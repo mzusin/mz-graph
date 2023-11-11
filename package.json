@@ -1,0 +1,48 @@
+{
+  "name": "mz-graph",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/mz-graph.min.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/mz-graph.esm.js",
+    "require": "./dist/mz-graph.node.cjs",
+    "default": "./dist/mz-graph.esm.js"
+  },
+  "scripts": {
+    "build:all": "npm run build:es6 & npm run build:node & npm run build:esm",
+    "watch:all": "npm run watch:es6 & npm run watch:node & npm run watch:esm",
+    "build:es6": "node run/es6.js",
+    "watch:es6": "node run/es6.js -- watch",
+    "build:node": "node run/node.js",
+    "watch:node": "node run/node.js -- watch",
+    "build:esm": "node run/esm.js",
+    "watch:esm": "node run/esm.js -- watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "eslint": "eslint ./src/**",
+    "typescript-declarations": "tsc --emitDeclarationOnly"
+  },
+  "keywords": [],
+  "author": "Miriam Zusin <miriam.zusin@gmail.com>",
+  "license": "MIT",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mzusin/mz-graph.git"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.3",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "esbuild": "^0.16.3",
+    "eslint": "^8.27.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
+  }
+}
