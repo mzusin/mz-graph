@@ -1,7 +1,7 @@
-import { test } from './core/main';
+import { graph } from './core/main';
 
 const api = {
-    ...test,
+    ...graph,
 };
 
 declare global {
