@@ -8,6 +8,10 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         adjacencyList.set(vertex.label, []);
     };
 
+    const getVertex = (label: string|number) : INode<T>[]|null => {
+        return adjacencyList.get(label) ?? null;
+    };
+
     const addEdge = (vertex1: INode<T>, vertex2: INode<T>) => {
         adjacencyList.get(vertex1.label)?.push(vertex2);
 
@@ -18,13 +22,14 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
 
     const printGraph = () => {
         for (const [vertex, neighbors] of adjacencyList.entries()) {
-            const neighborString = neighbors.join(', ');
+            const neighborString = neighbors.map(neighbor => neighbor.label).join(', ');
             console.log(`${vertex} -> [${neighborString}]`);
         }
     };
 
     return {
         addVertex,
+        getVertex,
         addEdge,
         printGraph,
     };
