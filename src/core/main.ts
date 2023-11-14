@@ -30,7 +30,63 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         }
     };
 
+    /**
+     * DFS - inorder - recursive
+     */
     const inorderRecursive = (callback: (label: string|number) => void) : void => {
+        const visited: Set<string|number> = new Set();
+
+        const traverse = (label: string|number) => {
+            if(visited.has(label)) return;
+            visited.add(label);
+
+            const neighbors = getVertex(label);
+            if(!neighbors) return;
+
+            for (const neighbor of neighbors) {
+                traverse(neighbor.label);
+            }
+
+            callback(label);
+        };
+
+        const labels = adjacencyList.keys();
+        for(const label of labels) {
+            traverse(label);
+        }
+    };
+
+    /**
+     * DFS - preorder - recursive
+     */
+    const preorderRecursive = (callback: (label: string|number) => void) : void => {
+        const visited: Set<string|number> = new Set();
+
+        const traverse = (label: string|number) => {
+            if(visited.has(label)) return;
+            visited.add(label);
+
+            callback(label);
+
+            const neighbors = getVertex(label);
+            if(!neighbors) return;
+
+            for (const neighbor of neighbors) {
+                traverse(neighbor.label);
+            }
+        };
+
+        const labels = adjacencyList.keys();
+        for(const label of labels) {
+            traverse(label);
+        }
+    };
+
+    /**
+     * DFS - postorder - recursive
+     * TODO
+     */
+    const postorderRecursive = (callback: (label: string|number) => void) : void => {
         const visited: Set<string|number> = new Set();
 
         const traverse = (label: string|number) => {
@@ -58,7 +114,10 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         getVertex,
         addEdge,
         printGraph,
+
         inorderRecursive,
+        preorderRecursive,
+        postorderRecursive,
     };
 };
 
