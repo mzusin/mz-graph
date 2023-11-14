@@ -1,5 +1,8 @@
-import { AdjacencyList, IGraph, INode } from '../interfaces';
+import { AdjacencyList, AdjacencyMatrix, IGraph, IMatrix, INode } from '../interfaces';
 
+/**
+ * Adjacency List Representation
+ */
 export const graph = <T>(isDirected: boolean) : IGraph<T> => {
     const adjacencyList: AdjacencyList<T> = new Map();
 
@@ -12,11 +15,11 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         return adjacencyList.get(label) ?? null;
     };
 
-    const addEdge = (vertex1: INode<T>, vertex2: INode<T>) => {
-        adjacencyList.get(vertex1.label)?.push(vertex2);
+    const addEdge = (source: INode<T>, destination: INode<T>) => {
+        adjacencyList.get(source.label)?.push(destination);
 
         if(!isDirected) {
-            adjacencyList.get(vertex2.label)?.push(vertex1);
+            adjacencyList.get(destination.label)?.push(source);
         }
     };
 
@@ -35,9 +38,51 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
     };
 };
 
-// Adjacency list representation
-// Adjacency matrix representation
+/**
+ * Adjacency Matrix Representation
+ */
+export const matrix = <T>(verticesNumber: number, isDirected: boolean, defaultValue: T|undefined = undefined) : IMatrix<T> => {
 
-// directed and undirected graphs
+    const adjacencyMatrix: AdjacencyMatrix<T> = Array(verticesNumber);
+
+    const getMatrix = () => {
+        return adjacencyMatrix;
+    };
+
+    const addEdge = (source: string|number, destination: string|number, weight: T) => {
+        // @ts-ignore
+        adjacencyMatrix[source][destination] = weight;
+
+        if(!isDirected) {
+            // @ts-ignore
+            adjacencyMatrix[destination][source] = weight;
+        }
+    };
+
+    const printGraph = () => {
+        for (let r = 0; r < verticesNumber; r++) {
+            console.log(adjacencyMatrix[r].map(value => ((value === null || value === undefined) ? '-' : value)).join(' '));
+        }
+    };
+
+    /**
+     * Entry Point.
+     */
+    (() => {
+        for(let r=0; r<verticesNumber; r++) {
+            adjacencyMatrix[r] = Array(verticesNumber);
+
+            if(defaultValue !== undefined) {
+                adjacencyMatrix[r].fill(defaultValue);
+            }
+        }
+    })();
+
+    return {
+        getMatrix,
+        addEdge,
+        printGraph,
+    };
+};
 
 // weighted and unweighted graph

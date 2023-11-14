@@ -6,7 +6,6 @@ declare module 'mz-graph' {
     }
 
     export type AdjacencyList<T> = Map<string|number, INode<T>[]>;
-
     export interface IGraph<T> {
         addVertex: (vertex: INode<T>) => void;
         getVertex: (label: string|number) => INode<T>[]|null;
@@ -14,5 +13,13 @@ declare module 'mz-graph' {
         printGraph: () => void;
     }
 
+    export type AdjacencyMatrix<T> = T[][];
+    export interface IMatrix<T> {
+        getMatrix: () => AdjacencyMatrix<T>;
+        addEdge: (source: string|number, destination: string|number, weight: T) => void;
+        printGraph: () => void;
+    }
+
     export const graph: <T>(isDirected: boolean) => IGraph<T>;
+    export const matrix: <T>(verticesNumber: number, isDirected: boolean, defaultValue?: T | undefined) => IMatrix<T>;
 }

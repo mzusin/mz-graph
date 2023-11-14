@@ -1,7 +1,7 @@
 import { graph } from '../src/core/main';
 import { IGraph, INode } from '../src/interfaces';
 
-describe('Undirected Graph', () => {
+describe('Undirected Adjacency List Graph', () => {
 
     test('Add Vertex', () => {
         const myGraph: IGraph<number> = graph<number>(false);
@@ -47,7 +47,7 @@ describe('Undirected Graph', () => {
     });
 });
 
-describe('Directed Graph', () => {
+describe('Directed Adjacency List Graph', () => {
 
     test('Add Vertex', () => {
         const myGraph: IGraph<number> = graph<number>(true);
