@@ -6,12 +6,18 @@ describe('Adjacency Matrix Graph', () => {
     describe('Init Matrix', () => {
 
         test('Init empty matrix 0x0', () => {
-            const myGraph: IMatrix<number> = matrix<number>(0, false);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 0,
+            });
             expect(myGraph.getMatrix()).toEqual([]);
         });
 
         test('Init empty matrix 1x1', () => {
-            const myGraph: IMatrix<number> = matrix<number>(1, false);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 1,
+            });
             expect(myGraph.getMatrix()).toEqual([
                 [
                     undefined,
@@ -20,7 +26,10 @@ describe('Adjacency Matrix Graph', () => {
         });
 
         test('Init empty matrix 2x2', () => {
-            const myGraph: IMatrix<number> = matrix<number>(2, false);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 2,
+            });
             expect(myGraph.getMatrix()).toEqual([
                 [
                     undefined,
@@ -34,7 +43,10 @@ describe('Adjacency Matrix Graph', () => {
         });
 
         test('Init empty matrix 3x3', () => {
-            const myGraph: IMatrix<number> = matrix<number>(3, false);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 3,
+            });
             expect(myGraph.getMatrix()).toEqual([
                 [
                     undefined,
@@ -55,7 +67,11 @@ describe('Adjacency Matrix Graph', () => {
         });
 
         test('Init matrix 2x2 with default 0', () => {
-            const myGraph: IMatrix<number> = matrix<number>(2, false, 0);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 2,
+                defaultValue: 0,
+            });
             expect(myGraph.getMatrix()).toEqual([
                 [
                     0,
@@ -69,7 +85,11 @@ describe('Adjacency Matrix Graph', () => {
         });
 
         test('Init matrix 2x2 with default 1', () => {
-            const myGraph: IMatrix<number> = matrix<number>(2, false, 1);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 2,
+                defaultValue: 1
+            });
             expect(myGraph.getMatrix()).toEqual([
                 [
                     1,
@@ -86,7 +106,11 @@ describe('Adjacency Matrix Graph', () => {
     describe('Add Edge', function () {
 
         test('addEdge should add an edge between two vertices in undirected - 0,1,5', () => {
-            const myGraph: IMatrix<number> = matrix<number>(3, false, 0);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 3,
+                defaultValue: 0
+            });
             myGraph.addEdge(0, 1, 5);
             const res = myGraph.getMatrix();
             expect(res[0][1]).toBe(5);
@@ -94,7 +118,11 @@ describe('Adjacency Matrix Graph', () => {
         });
 
         test('addEdge should add an edge between two vertices in directed - 0,1,5', () => {
-            const myGraph: IMatrix<number> = matrix<number>(3, true, 0);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: true,
+                verticesNumber: 3,
+                defaultValue: 0
+            });
             myGraph.addEdge(0, 1, 5);
             const res = myGraph.getMatrix();
             expect(res[0][1]).toBe(5);
@@ -102,7 +130,11 @@ describe('Adjacency Matrix Graph', () => {
         });
 
         test('addEdge should add an edge between two vertices in undirected - 1,2,8', () => {
-            const myGraph: IMatrix<number> = matrix<number>(3, false, 0);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: false,
+                verticesNumber: 3,
+                defaultValue: 0
+            });
             myGraph.addEdge(1, 2, 8);
             const res = myGraph.getMatrix();
             expect(res[1][2]).toBe(8);
@@ -110,7 +142,11 @@ describe('Adjacency Matrix Graph', () => {
         });
 
         test('addEdge should add an edge between two vertices in directed - 1,2,8', () => {
-            const myGraph: IMatrix<number> = matrix<number>(3, true, 100);
+            const myGraph: IMatrix<number> = matrix<number>({
+                isDirected: true,
+                verticesNumber: 3,
+                defaultValue: 100
+            });
             myGraph.addEdge(1, 2, 8);
             const res = myGraph.getMatrix();
             expect(res[1][2]).toBe(8);
@@ -124,7 +160,11 @@ describe('Adjacency Matrix Graph', () => {
 
         beforeEach(() => {
             // Initialize a new graph and spy on console.log before each test
-            graph = matrix<number>(3, false, 0); // Replace with the appropriate parameters for your use case
+            graph = matrix<number>({
+                isDirected: false,
+                verticesNumber: 3,
+                defaultValue: 0,
+            }); // Replace with the appropriate parameters for your use case
             consoleSpy = jest.spyOn(console, 'log').mockImplementation();
         });
 

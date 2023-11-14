@@ -33,5 +33,11 @@ declare module 'mz-graph' {
 
     export const graph: <T>(options: IAdjacencyListOptions<T>) => IGraph<T>;
 
-    export const matrix: <T>(verticesNumber: number, isDirected: boolean, defaultValue?: T | undefined) => IMatrix<T>;
+    export interface IAdjacencyMatrixOptions<T> {
+        isDirected: boolean;
+        verticesNumber: number;
+        defaultValue?: T;
+    }
+
+    export const matrix: <T>(options: IAdjacencyMatrixOptions<T>) => IMatrix<T>;
 }

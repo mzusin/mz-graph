@@ -29,4 +29,10 @@ export interface IAdjacencyListOptions<T> {
     initial?: { [key: Label]: INode<T>[] };
 }
 
+export interface IAdjacencyMatrixOptions<T> {
+    isDirected: boolean;
+    verticesNumber: number;
+    defaultValue?: T;
+}
+
 

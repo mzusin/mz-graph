@@ -1,4 +1,13 @@
-import { AdjacencyList, AdjacencyMatrix, IGraph, IMatrix, INode, Label, IAdjacencyListOptions } from '../interfaces';
+import {
+    AdjacencyList,
+    AdjacencyMatrix,
+    IGraph,
+    IMatrix,
+    INode,
+    Label,
+    IAdjacencyListOptions,
+    IAdjacencyMatrixOptions
+} from '../interfaces';
 
 /**
  * Adjacency List Representation
@@ -160,13 +169,9 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
 /**
  * Adjacency Matrix Representation
  */
-export const matrix = <T>(
-    verticesNumber: number,
-    isDirected: boolean,
-    defaultValue: T|undefined = undefined
-) : IMatrix<T> => {
+export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
 
-    const adjacencyMatrix: AdjacencyMatrix<T> = Array(verticesNumber);
+    const adjacencyMatrix: AdjacencyMatrix<T> = Array(options.verticesNumber);
 
     const getMatrix = () => {
         return adjacencyMatrix;
@@ -176,14 +181,14 @@ export const matrix = <T>(
         // @ts-ignore
         adjacencyMatrix[source][destination] = weight;
 
-        if(!isDirected) {
+        if(!options.isDirected) {
             // @ts-ignore
             adjacencyMatrix[destination][source] = weight;
         }
     };
 
     const printGraph = () => {
-        for (let r = 0; r < verticesNumber; r++) {
+        for (let r = 0; r < options.verticesNumber; r++) {
             console.log(adjacencyMatrix[r].map(value => ((value === null || value === undefined) ? '-' : value)).join(' '));
         }
     };
@@ -192,11 +197,11 @@ export const matrix = <T>(
      * Entry Point.
      */
     (() => {
-        for(let r=0; r<verticesNumber; r++) {
-            adjacencyMatrix[r] = Array(verticesNumber);
+        for(let r=0; r<options.verticesNumber; r++) {
+            adjacencyMatrix[r] = Array(options.verticesNumber);
 
-            if(defaultValue !== undefined) {
-                adjacencyMatrix[r].fill(defaultValue);
+            if(options.defaultValue !== undefined) {
+                adjacencyMatrix[r].fill(options.defaultValue);
             }
         }
     })();

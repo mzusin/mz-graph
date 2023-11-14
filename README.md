@@ -90,14 +90,24 @@ export interface IMatrix<T> {
     printGraph: () => void;
 }
 
-export const matrix: <T>(verticesNumber: number, isDirected: boolean, defaultValue?: T | undefined) => IMatrix<T>;
+export interface IAdjacencyMatrixOptions<T> {
+    isDirected: boolean;
+    verticesNumber: number;
+    defaultValue?: T;
+}
+
+export const matrix: <T>(options: IAdjacencyMatrixOptions<T>) => IMatrix<T>;
 ```
 
 Usage example:
 
 ```ts
 // create a matrix 2x2 with default value 0
-const myGraph: IMatrix<number> = matrix<number>(2, false, 0); // true for directed graph
+const myGraph: IMatrix<number> = matrix<number>({
+    isDirected: false,
+    verticesNumber: 2,
+    defaultValue: 0,
+}); // true for directed graph
 
 // add edge, row = 0, col = 1, weight = 5
 myGraph.addEdge(0, 1, 5);
