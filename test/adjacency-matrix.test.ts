@@ -1,4 +1,4 @@
-import { matrix } from '../src/core/adjacency-list';
+import { matrix } from '../src/core/adjacency-matrix';
 import { IMatrix } from '../src/interfaces';
 
 describe('Adjacency Matrix Graph', () => {
@@ -99,6 +99,19 @@ describe('Adjacency Matrix Graph', () => {
                     1,
                     1,
                 ],
+            ]);
+        });
+
+        test('Init 2x2 matrix with initial values.', () => {
+            const myGraph: IMatrix<number> = matrix<number>({
+                initial: [
+                    [2, 1],
+                    [1, 2],
+                ]
+            });
+            expect(myGraph.getMatrix()).toEqual([
+                [2, 1],
+                [1, 2],
             ]);
         });
     });

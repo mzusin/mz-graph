@@ -1,12 +1,9 @@
 import {
     AdjacencyList,
-    AdjacencyMatrix,
     IGraph,
-    IMatrix,
     INode,
     Label,
     IAdjacencyListOptions,
-    IAdjacencyMatrixOptions
 } from '../interfaces';
 
 /**

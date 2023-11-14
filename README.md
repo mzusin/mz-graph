@@ -25,7 +25,7 @@ export interface IGraph<T> {
 }
 
 export interface IAdjacencyListOptions<T> {
-    isDirected: boolean;
+    isDirected?: boolean;
     initial?: { [key: Label]: INode<T>[] };
 }
 
@@ -91,9 +91,10 @@ export interface IMatrix<T> {
 }
 
 export interface IAdjacencyMatrixOptions<T> {
-    isDirected: boolean;
-    verticesNumber: number;
+    isDirected?: boolean;
+    verticesNumber?: number;
     defaultValue?: T;
+    initial?: T[][];
 }
 
 export const matrix: <T>(options: IAdjacencyMatrixOptions<T>) => IMatrix<T>;

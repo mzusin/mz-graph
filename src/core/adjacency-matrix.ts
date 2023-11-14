@@ -1,11 +1,7 @@
 import {
-    AdjacencyList,
     AdjacencyMatrix,
-    IGraph,
     IMatrix,
-    INode,
     Label,
-    IAdjacencyListOptions,
     IAdjacencyMatrixOptions
 } from '../interfaces';
 
@@ -14,7 +10,9 @@ import {
  */
 export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
 
-    const adjacencyMatrix: AdjacencyMatrix<T> = Array(options.verticesNumber);
+    const verticesNumber = (options.initial ? options.initial.length : options.verticesNumber) ?? 2;
+
+    let adjacencyMatrix: AdjacencyMatrix<T> = Array(verticesNumber);
 
     const getMatrix = () => {
         return adjacencyMatrix;
@@ -31,7 +29,7 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
     };
 
     const printGraph = () => {
-        for (let r = 0; r < options.verticesNumber; r++) {
+        for (let r = 0; r < verticesNumber; r++) {
             console.log(adjacencyMatrix[r].map(value => ((value === null || value === undefined) ? '-' : value)).join(' '));
         }
     };
@@ -40,8 +38,14 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
      * Entry Point.
      */
     (() => {
-        for(let r=0; r<options.verticesNumber; r++) {
-            adjacencyMatrix[r] = Array(options.verticesNumber);
+        if(options.initial) {
+            adjacencyMatrix = options.initial;
+            return;
+        }
+
+        // If no initial value is defined ---> init an empty array.
+        for(let r=0; r<verticesNumber; r++) {
+            adjacencyMatrix[r] = Array(verticesNumber);
 
             if(options.defaultValue !== undefined) {
                 adjacencyMatrix[r].fill(options.defaultValue);

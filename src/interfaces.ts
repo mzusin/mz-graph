@@ -25,14 +25,15 @@ export interface IMatrix<T> {
 }
 
 export interface IAdjacencyListOptions<T> {
-    isDirected: boolean;
+    isDirected?: boolean;
     initial?: { [key: Label]: INode<T>[] };
 }
 
 export interface IAdjacencyMatrixOptions<T> {
-    isDirected: boolean;
-    verticesNumber: number;
+    isDirected?: boolean;
+    verticesNumber?: number;
     defaultValue?: T;
+    initial?: T[][];
 }
 
 

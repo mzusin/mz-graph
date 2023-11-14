@@ -27,16 +27,17 @@ declare module 'mz-graph' {
     }
 
     export interface IAdjacencyListOptions<T> {
-        isDirected: boolean;
+        isDirected?: boolean;
         initial?: { [key: Label]: INode<T>[] };
     }
 
     export const graph: <T>(options: IAdjacencyListOptions<T>) => IGraph<T>;
 
     export interface IAdjacencyMatrixOptions<T> {
-        isDirected: boolean;
-        verticesNumber: number;
+        isDirected?: boolean;
+        verticesNumber?: number;
         defaultValue?: T;
+        initial?: T[][];
     }
 
     export const matrix: <T>(options: IAdjacencyMatrixOptions<T>) => IMatrix<T>;
