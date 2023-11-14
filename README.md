@@ -103,6 +103,15 @@ export const matrix: <T>(options: IAdjacencyMatrixOptions<T>) => IMatrix<T>;
 Usage example:
 
 ```ts
+const myGraph: IMatrix<number> = matrix<number>({
+    initial: [
+        [2, 1],
+        [1, 2],
+    ]
+});
+
+// or
+
 // create a matrix 2x2 with default value 0
 const myGraph: IMatrix<number> = matrix<number>({
     isDirected: false,
