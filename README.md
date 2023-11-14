@@ -48,7 +48,7 @@ const myGraph: IGraph<number> = graph<number>({
 
 const myGraph: IGraph<number> = graph<number>({
     isDirected: false
-}); // true for directed graph
+});
 const vertex: INode<number> = { label: 'A', value: 42 }; // or use number as label { label: 10, value: 42 }
 
 // add/get a vertex
@@ -107,7 +107,7 @@ const myGraph: IMatrix<number> = matrix<number>({
     isDirected: false,
     verticesNumber: 2,
     defaultValue: 0,
-}); // true for directed graph
+});
 
 // add edge, row = 0, col = 1, weight = 5
 myGraph.addEdge(0, 1, 5);

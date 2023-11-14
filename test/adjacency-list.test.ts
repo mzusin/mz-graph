@@ -1,4 +1,4 @@
-import { graph } from '../src/core/main';
+import { graph } from '../src/core/adjacency-list';
 import { IGraph, INode } from '../src/interfaces';
 
 describe('Undirected Adjacency List Graph', () => {

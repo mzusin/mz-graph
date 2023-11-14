@@ -1,4 +1,4 @@
-import { matrix } from '../src/core/main';
+import { matrix } from '../src/core/adjacency-list';
 import { IMatrix } from '../src/interfaces';
 
 describe('Adjacency Matrix Graph', () => {

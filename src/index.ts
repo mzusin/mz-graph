@@ -1,7 +1,9 @@
-import { graph } from './core/main';
+import { graph } from './core/adjacency-list';
+import { matrix } from './core/adjacency-matrix';
 
 const api = {
     ...graph,
+    ...matrix,
 };
 
 declare global {
@@ -12,4 +14,5 @@ declare global {
 
 window.mzGraph = window.mzGraph || api;
 
-export * from './core/main';
+export * from './core/adjacency-list';
+export * from './core/adjacency-matrix';

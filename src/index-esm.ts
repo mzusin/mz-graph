@@ -1,1 +1,2 @@
-export * from './core/main';
+export * from './core/adjacency-list';
+export * from './core/adjacency-matrix';
