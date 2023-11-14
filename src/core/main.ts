@@ -1,4 +1,4 @@
-import { AdjacencyList, AdjacencyMatrix, IGraph, IMatrix, INode } from '../interfaces';
+import { AdjacencyList, AdjacencyMatrix, IGraph, IMatrix, INode, Label } from '../interfaces';
 
 /**
  * Adjacency List Representation
@@ -11,7 +11,7 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         adjacencyList.set(vertex.label, []);
     };
 
-    const getVertex = (label: string|number) : INode<T>[]|null => {
+    const getVertex = (label: Label) : INode<T>[]|null => {
         return adjacencyList.get(label) ?? null;
     };
 
@@ -32,90 +32,86 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
 
     /**
      * BFS (Breadth First Search)
+     * Generally BFS is not implemented in graphs using recursion; this is something not standard.
      */
-    const bfs = (startLabel: string | number, callback: (label: string | number) => void) => {
-        const visited: Set<string | number> = new Set();
-        visited.add(startLabel);
+    const bfs = (callback: (label: Label) => void) => {
+        const visited: Set<Label> = new Set();
 
-        const queue: (string | number)[] = [ startLabel ];
+        const traverse = (startLabel: Label) => {
 
-        while (queue.length > 0) {
-            const currentLabel = queue.shift() as string | number;
+            const queue: (Label)[] = [ startLabel ];
+            visited.add(startLabel);
 
-            callback(currentLabel);
+            while (queue.length > 0) {
+                const currentLabel = queue.shift() as Label;
 
-            const neighbors = getVertex(currentLabel) || [];
-            for (const neighbor of neighbors) {
-                if(visited.has(neighbor.label)) continue;
+                callback(currentLabel);
 
-                visited.add(neighbor.label);
-                queue.push(neighbor.label);
+                const neighbors = getVertex(currentLabel) || [];
+                for (const neighbor of neighbors) {
+                    if(visited.has(neighbor.label)) continue;
+
+                    visited.add(neighbor.label);
+                    queue.push(neighbor.label);
+                }
             }
-        }
-    };
-
-    /**
-     * DFS (Depth First Search) - inorder - recursive
-     */
-    const inorderRecursive = (callback: (label: string|number) => void) : void => {
-        const visited: Set<string|number> = new Set();
-
-        const traverse = (label: string|number) => {
-            if(visited.has(label)) return;
-            visited.add(label);
-
-            const neighbors = getVertex(label);
-            if(!neighbors) return;
-
-            for (const neighbor of neighbors) {
-                traverse(neighbor.label);
-            }
-
-            callback(label);
         };
 
+        // handle disconnected nodes
         const labels = adjacencyList.keys();
-        for(const label of labels) {
+        for (const label of labels) {
+            if(visited.has(label)) continue;
             traverse(label);
         }
     };
 
     /**
-     * DFS (Depth First Search) - preorder - recursive
+     * DFS (Depth First Search)
      */
-    const preorderRecursive = (callback: (label: string|number) => void) : void => {
-        const visited: Set<string|number> = new Set();
+    const dfs = (callback: (label: Label) => void) : void => {
 
-        const traverse = (label: string|number) => {
-            if(visited.has(label)) return;
-            visited.add(label);
+        const visited: Set<Label> = new Set();
 
-            callback(label);
+        const traverse = (startLabel: Label) => {
 
-            const neighbors = getVertex(label);
-            if(!neighbors) return;
+            const stack: (Label)[] = [ startLabel ];
+            visited.add(startLabel);
 
-            for (const neighbor of neighbors) {
-                traverse(neighbor.label);
+            while (stack.length > 0) {
+                const currentLabel = stack.pop() as Label;
+
+                callback(currentLabel);
+
+                const neighbors = getVertex(currentLabel) || [];
+                for (const neighbor of neighbors) {
+                    if(visited.has(neighbor.label)) continue;
+
+                    visited.add(neighbor.label);
+                    stack.push(neighbor.label);
+                }
             }
         };
 
+        // handle disconnected nodes
         const labels = adjacencyList.keys();
-        for(const label of labels) {
+        for (const label of labels) {
+            if(visited.has(label)) continue;
             traverse(label);
         }
     };
 
     /**
-     * DFS (Depth First Search) - postorder - recursive
-     * TODO
+     * DFS (Depth First Search)
      */
-    const postorderRecursive = (callback: (label: string|number) => void) : void => {
-        const visited: Set<string|number> = new Set();
+    const dfsRecursive = (callback: (label: Label) => void) : void => {
 
-        const traverse = (label: string|number) => {
+        const visited: Set<Label> = new Set();
+
+        const traverse = (label: Label) => {
             if(visited.has(label)) return;
             visited.add(label);
+
+            callback(label);
 
             const neighbors = getVertex(label);
             if(!neighbors) return;
@@ -123,10 +119,9 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
             for (const neighbor of neighbors) {
                 traverse(neighbor.label);
             }
-
-            callback(label);
         };
 
+        // handle disconnected nodes
         const labels = adjacencyList.keys();
         for(const label of labels) {
             traverse(label);
@@ -140,9 +135,8 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         printGraph,
 
         bfs,
-        inorderRecursive,
-        preorderRecursive,
-        postorderRecursive,
+        dfs,
+        dfsRecursive,
     };
 };
 
@@ -157,7 +151,7 @@ export const matrix = <T>(verticesNumber: number, isDirected: boolean, defaultVa
         return adjacencyMatrix;
     };
 
-    const addEdge = (source: string|number, destination: string|number, weight: T) => {
+    const addEdge = (source: Label, destination: Label, weight: T) => {
         // @ts-ignore
         adjacencyMatrix[source][destination] = weight;
 

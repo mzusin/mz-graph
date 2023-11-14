@@ -64,7 +64,7 @@ describe('Undirected Adjacency List Graph', () => {
         myGraph.addEdge(vertexB, vertexD);
 
         const callback = jest.fn();
-        myGraph.bfs('A', callback);
+        myGraph.bfs(callback);
 
         // Check the callback calls in the correct order
         expect(callback).toHaveBeenNthCalledWith(1, 'A');
@@ -74,7 +74,7 @@ describe('Undirected Adjacency List Graph', () => {
         expect(callback).toHaveBeenCalledTimes(4);
     });
 
-    test('Inorder Recursive', () => {
+    test('DFS', () => {
         const myGraph: IGraph<number> = graph<number>(false);
 
         const vertexA: INode<number> = { label: 'A', value: 42 };
@@ -89,31 +89,7 @@ describe('Undirected Adjacency List Graph', () => {
         myGraph.addEdge(vertexB, vertexC);
 
         const callback = jest.fn();
-        myGraph.inorderRecursive(callback);
-
-        // Check the callback calls in the correct order
-        expect(callback).toHaveBeenNthCalledWith(1, 'C');
-        expect(callback).toHaveBeenNthCalledWith(2, 'B');
-        expect(callback).toHaveBeenNthCalledWith(3, 'A');
-        expect(callback).toHaveBeenCalledTimes(3);
-    });
-
-    test('Preoder Recursive', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
-
-        const vertexA: INode<number> = { label: 'A', value: 42 };
-        const vertexB: INode<number> = { label: 'B', value: 99 };
-        const vertexC: INode<number> = { label: 'C', value: 77 };
-
-        myGraph.addVertex(vertexA);
-        myGraph.addVertex(vertexB);
-        myGraph.addVertex(vertexC);
-
-        myGraph.addEdge(vertexA, vertexB);
-        myGraph.addEdge(vertexB, vertexC);
-
-        const callback = jest.fn();
-        myGraph.preorderRecursive(callback);
+        myGraph.dfs(callback);
 
         // Check the callback calls in the correct order
         expect(callback).toHaveBeenNthCalledWith(1, 'A');
@@ -122,7 +98,7 @@ describe('Undirected Adjacency List Graph', () => {
         expect(callback).toHaveBeenCalledTimes(3);
     });
 
-    test('Postorder Recursive', () => {
+    test('DFS recursive', () => {
         const myGraph: IGraph<number> = graph<number>(false);
 
         const vertexA: INode<number> = { label: 'A', value: 42 };
@@ -137,23 +113,15 @@ describe('Undirected Adjacency List Graph', () => {
         myGraph.addEdge(vertexB, vertexC);
 
         const callback = jest.fn();
-        myGraph.postorderRecursive(callback);
+        myGraph.dfsRecursive(callback);
 
         // Check the callback calls in the correct order
-        expect(callback).toHaveBeenNthCalledWith(1, 'C');
+        expect(callback).toHaveBeenNthCalledWith(1, 'A');
         expect(callback).toHaveBeenNthCalledWith(2, 'B');
-        expect(callback).toHaveBeenNthCalledWith(3, 'A');
+        expect(callback).toHaveBeenNthCalledWith(3, 'C');
         expect(callback).toHaveBeenCalledTimes(3);
     });
 
-    test('Inorder recursive for empty graph', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
-
-        const callback = jest.fn();
-        myGraph.inorderRecursive(callback);
-
-        expect(callback).not.toHaveBeenCalled();
-    });
 });
 
 describe('Directed Adjacency List Graph', () => {
