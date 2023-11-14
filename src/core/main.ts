@@ -1,9 +1,9 @@
-import { AdjacencyList, AdjacencyMatrix, IGraph, IMatrix, INode, Label } from '../interfaces';
+import { AdjacencyList, AdjacencyMatrix, IGraph, IMatrix, INode, Label, IAdjacencyListOptions } from '../interfaces';
 
 /**
  * Adjacency List Representation
  */
-export const graph = <T>(isDirected: boolean, initial?: { [key: Label]: INode<T>[] }) : IGraph<T> => {
+export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     const adjacencyList: AdjacencyList<T> = new Map();
 
     const addVertex = (vertex: INode<T>) => {
@@ -18,7 +18,7 @@ export const graph = <T>(isDirected: boolean, initial?: { [key: Label]: INode<T>
     const addEdge = (source: INode<T>, destination: INode<T>) => {
         adjacencyList.get(source.label)?.push(destination);
 
-        if(!isDirected) {
+        if(!options.isDirected) {
             adjacencyList.get(destination.label)?.push(source);
         }
     };
@@ -135,12 +135,12 @@ export const graph = <T>(isDirected: boolean, initial?: { [key: Label]: INode<T>
      * Entry Point.
      */
     (() => {
-        if(!initial) return;
+        if(!options.initial) return;
 
-        const labels: Label[] = Object.keys(initial);
+        const labels: Label[] = Object.keys(options.initial);
         for(const label of labels) {
             // @ts-ignore
-            const neighbors: INode<T>[] = initial[label] || [];
+            const neighbors: INode<T>[] = options.initial[label] || [];
             adjacencyList.set(label, neighbors);
         }
     })();
@@ -160,7 +160,11 @@ export const graph = <T>(isDirected: boolean, initial?: { [key: Label]: INode<T>
 /**
  * Adjacency Matrix Representation
  */
-export const matrix = <T>(verticesNumber: number, isDirected: boolean, defaultValue: T|undefined = undefined) : IMatrix<T> => {
+export const matrix = <T>(
+    verticesNumber: number,
+    isDirected: boolean,
+    defaultValue: T|undefined = undefined
+) : IMatrix<T> => {
 
     const adjacencyMatrix: AdjacencyMatrix<T> = Array(verticesNumber);
 

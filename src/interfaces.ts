@@ -24,4 +24,9 @@ export interface IMatrix<T> {
     printGraph: () => void;
 }
 
+export interface IAdjacencyListOptions<T> {
+    isDirected: boolean;
+    initial?: { [key: Label]: INode<T>[] };
+}
+
 

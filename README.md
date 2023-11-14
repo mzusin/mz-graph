@@ -24,23 +24,31 @@ export interface IGraph<T> {
     dfsRecursive: (callback: (label: Label) => void) => void;
 }
 
-export const graph: <T>(isDirected: boolean) => IGraph<T>;
+export interface IAdjacencyListOptions<T> {
+    isDirected: boolean;
+    initial?: { [key: Label]: INode<T>[] };
+}
+
+export const graph: <T>(options: IAdjacencyListOptions<T>) => IGraph<T>;
 ```
 
 Usage example:
 
 ```ts
-import { Label } from './interfaces';
-
-const myGraph: IGraph<number> = graph<number>(true, {
-    A: [{ label: 'B', value: 10 }],
-    B: [{ label: 'C', value: 20 }],
-    C: [],
+const myGraph: IGraph<number> = graph<number>({
+    isDirected: true,
+    initial: {
+        A: [{ label: 'B', value: 10 }],
+        B: [{ label: 'C', value: 20 }],
+        C: [],
+    }
 });
 
 // or
 
-const myGraph: IGraph<number> = graph<number>(false); // true for directed graph
+const myGraph: IGraph<number> = graph<number>({
+    isDirected: false
+}); // true for directed graph
 const vertex: INode<number> = { label: 'A', value: 42 }; // or use number as label { label: 10, value: 42 }
 
 // add/get a vertex

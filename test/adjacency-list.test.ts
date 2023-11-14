@@ -4,10 +4,13 @@ import { IGraph, INode } from '../src/interfaces';
 describe('Undirected Adjacency List Graph', () => {
 
     test('Init graph with initial value', () => {
-        const myGraph: IGraph<number> = graph<number>(true, {
-            A: [{ label: 'B' }],
-            B: [{ label: 'C' }],
-            C: [],
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: true,
+            initial: {
+                A: [{ label: 'B' }],
+                B: [{ label: 'C' }],
+                C: [],
+            },
         });
 
         const consoleSpy = jest.spyOn(console, 'log');
@@ -20,10 +23,13 @@ describe('Undirected Adjacency List Graph', () => {
     });
 
     test('Init graph with initial value with weights', () => {
-        const myGraph: IGraph<number> = graph<number>(true, {
-            A: [{ label: 'B', value: 10 }],
-            B: [{ label: 'C', value: 20 }],
-            C: [],
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: true,
+            initial: {
+                A: [{ label: 'B', value: 10 }],
+                B: [{ label: 'C', value: 20 }],
+                C: [],
+            }
         });
 
         const consoleSpy = jest.spyOn(console, 'log');
@@ -36,14 +42,18 @@ describe('Undirected Adjacency List Graph', () => {
     });
 
     test('Add Vertex', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: false
+        });
         const vertex: INode<number> = { label: 'A', value: 42 };
         myGraph.addVertex(vertex);
         expect(myGraph.getVertex('A')).toBeDefined();
     });
 
     test('Add Edge', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: false
+        });
 
         const vertex1: INode<number> = { label: 'A', value: 42 };
         const vertex2: INode<number> = { label: 'B', value: 99 };
@@ -60,7 +70,9 @@ describe('Undirected Adjacency List Graph', () => {
     });
 
     test('Print Graph', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: false
+        });
 
         const vertex1: INode<number> = { label: 'A', value: 42 };
         const vertex2: INode<number> = { label: 'B', value: 99 };
@@ -79,7 +91,9 @@ describe('Undirected Adjacency List Graph', () => {
     });
 
     test('BFS', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: false
+        });
 
         const vertexA: INode<number> = { label: 'A', value: 42 };
         const vertexB: INode<number> = { label: 'B', value: 99 };
@@ -107,7 +121,9 @@ describe('Undirected Adjacency List Graph', () => {
     });
 
     test('DFS', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: false
+        });
 
         const vertexA: INode<number> = { label: 'A', value: 42 };
         const vertexB: INode<number> = { label: 'B', value: 99 };
@@ -131,7 +147,9 @@ describe('Undirected Adjacency List Graph', () => {
     });
 
     test('DFS recursive', () => {
-        const myGraph: IGraph<number> = graph<number>(false);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: false
+        });
 
         const vertexA: INode<number> = { label: 'A', value: 42 };
         const vertexB: INode<number> = { label: 'B', value: 99 };
@@ -159,14 +177,18 @@ describe('Undirected Adjacency List Graph', () => {
 describe('Directed Adjacency List Graph', () => {
 
     test('Add Vertex', () => {
-        const myGraph: IGraph<number> = graph<number>(true);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: true
+        });
         const vertex: INode<number> = { label: 'A', value: 42 };
         myGraph.addVertex(vertex);
         expect(myGraph.getVertex('A')).toBeDefined();
     });
 
     test('Add Edge', () => {
-        const myGraph: IGraph<number> = graph<number>(true);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: true
+        });
 
         const vertex1: INode<number> = { label: 'A', value: 42 };
         const vertex2: INode<number> = { label: 'B', value: 99 };
@@ -183,7 +205,9 @@ describe('Directed Adjacency List Graph', () => {
     });
 
     test('Print Graph', () => {
-        const myGraph: IGraph<number> = graph<number>(true);
+        const myGraph: IGraph<number> = graph<number>({
+            isDirected: true
+        });
 
         const vertex1: INode<number> = { label: 'A', value: 42 };
         const vertex2: INode<number> = { label: 'B', value: 99 };
