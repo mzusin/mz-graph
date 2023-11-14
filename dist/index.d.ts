@@ -12,6 +12,7 @@ declare module 'mz-graph' {
         addEdge: (vertex1: INode<T>, vertex2: INode<T>) => void;
         printGraph: () => void;
 
+        bfs: (startLabel: string | number, callback: (label: string | number) => void) => void;
         inorderRecursive: (callback: (label: string|number) => void) => void;
         preorderRecursive: (callback: (label: string|number) => void) => void;
         postorderRecursive: (callback: (label: string|number) => void) => void;

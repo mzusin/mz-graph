@@ -46,6 +46,34 @@ describe('Undirected Adjacency List Graph', () => {
         expect(consoleSpy).toHaveBeenCalledWith('B -> [A]');
     });
 
+    test('BFS', () => {
+        const myGraph: IGraph<number> = graph<number>(false);
+
+        const vertexA: INode<number> = { label: 'A', value: 42 };
+        const vertexB: INode<number> = { label: 'B', value: 99 };
+        const vertexC: INode<number> = { label: 'C', value: 77 };
+        const vertexD: INode<number> = { label: 'D', value: 55 };
+
+        myGraph.addVertex(vertexA);
+        myGraph.addVertex(vertexB);
+        myGraph.addVertex(vertexC);
+        myGraph.addVertex(vertexD);
+
+        myGraph.addEdge(vertexA, vertexB);
+        myGraph.addEdge(vertexA, vertexC);
+        myGraph.addEdge(vertexB, vertexD);
+
+        const callback = jest.fn();
+        myGraph.bfs('A', callback);
+
+        // Check the callback calls in the correct order
+        expect(callback).toHaveBeenNthCalledWith(1, 'A');
+        expect(callback).toHaveBeenNthCalledWith(2, 'B');
+        expect(callback).toHaveBeenNthCalledWith(3, 'C');
+        expect(callback).toHaveBeenNthCalledWith(4, 'D');
+        expect(callback).toHaveBeenCalledTimes(4);
+    });
+
     test('Inorder Recursive', () => {
         const myGraph: IGraph<number> = graph<number>(false);
 

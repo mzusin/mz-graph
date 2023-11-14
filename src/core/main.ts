@@ -31,7 +31,31 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
     };
 
     /**
-     * DFS - inorder - recursive
+     * BFS (Breadth First Search)
+     */
+    const bfs = (startLabel: string | number, callback: (label: string | number) => void) => {
+        const visited: Set<string | number> = new Set();
+        visited.add(startLabel);
+
+        const queue: (string | number)[] = [ startLabel ];
+
+        while (queue.length > 0) {
+            const currentLabel = queue.shift() as string | number;
+
+            callback(currentLabel);
+
+            const neighbors = getVertex(currentLabel) || [];
+            for (const neighbor of neighbors) {
+                if(visited.has(neighbor.label)) continue;
+
+                visited.add(neighbor.label);
+                queue.push(neighbor.label);
+            }
+        }
+    };
+
+    /**
+     * DFS (Depth First Search) - inorder - recursive
      */
     const inorderRecursive = (callback: (label: string|number) => void) : void => {
         const visited: Set<string|number> = new Set();
@@ -57,7 +81,7 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
     };
 
     /**
-     * DFS - preorder - recursive
+     * DFS (Depth First Search) - preorder - recursive
      */
     const preorderRecursive = (callback: (label: string|number) => void) : void => {
         const visited: Set<string|number> = new Set();
@@ -83,7 +107,7 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
     };
 
     /**
-     * DFS - postorder - recursive
+     * DFS (Depth First Search) - postorder - recursive
      * TODO
      */
     const postorderRecursive = (callback: (label: string|number) => void) : void => {
@@ -115,6 +139,7 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         addEdge,
         printGraph,
 
+        bfs,
         inorderRecursive,
         preorderRecursive,
         postorderRecursive,
