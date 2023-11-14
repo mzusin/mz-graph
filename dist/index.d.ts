@@ -26,6 +26,10 @@ declare module 'mz-graph' {
         printGraph: () => void;
     }
 
-    export const graph: <T>(isDirected: boolean) => IGraph<T>;
+    export const graph: <T>(isDirected: boolean, initial?: {
+        [key: string]: INode<T>[];
+        [key: number]: INode<T>[];
+    } | undefined) => IGraph<T>;
+
     export const matrix: <T>(verticesNumber: number, isDirected: boolean, defaultValue?: T | undefined) => IMatrix<T>;
 }

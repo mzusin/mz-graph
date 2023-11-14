@@ -32,6 +32,14 @@ Usage example:
 ```ts
 import { Label } from './interfaces';
 
+const myGraph: IGraph<number> = graph<number>(true, {
+    A: [{ label: 'B', value: 10 }],
+    B: [{ label: 'C', value: 20 }],
+    C: [],
+});
+
+// or
+
 const myGraph: IGraph<number> = graph<number>(false); // true for directed graph
 const vertex: INode<number> = { label: 'A', value: 42 }; // or use number as label { label: 10, value: 42 }
 

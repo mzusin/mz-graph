@@ -19,6 +19,22 @@ describe('Undirected Adjacency List Graph', () => {
         expect(consoleSpy).toHaveBeenCalledWith('C -> []');
     });
 
+    test('Init graph with initial value with weights', () => {
+        const myGraph: IGraph<number> = graph<number>(true, {
+            A: [{ label: 'B', value: 10 }],
+            B: [{ label: 'C', value: 20 }],
+            C: [],
+        });
+
+        const consoleSpy = jest.spyOn(console, 'log');
+        myGraph.printGraph();
+
+        // Test the output
+        expect(consoleSpy).toHaveBeenCalledWith('A -> [B(10)]');
+        expect(consoleSpy).toHaveBeenCalledWith('B -> [C(20)]');
+        expect(consoleSpy).toHaveBeenCalledWith('C -> []');
+    });
+
     test('Add Vertex', () => {
         const myGraph: IGraph<number> = graph<number>(false);
         const vertex: INode<number> = { label: 'A', value: 42 };
@@ -181,7 +197,7 @@ describe('Directed Adjacency List Graph', () => {
         myGraph.printGraph();
 
         // Test the output
-        expect(consoleSpy).toHaveBeenCalledWith('A -> [B]');
+        expect(consoleSpy).toHaveBeenCalledWith('A -> [B(99)]');
         expect(consoleSpy).toHaveBeenCalledWith('B -> []');
     });
 });
