@@ -30,11 +30,35 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
         }
     };
 
+    const inorderRecursive = (callback: (label: string|number) => void) : void => {
+        const visited: Set<string|number> = new Set();
+
+        const traverse = (label: string|number) => {
+            if(visited.has(label)) return;
+            visited.add(label);
+
+            const neighbors = getVertex(label);
+            if(!neighbors) return;
+
+            for (const neighbor of neighbors) {
+                traverse(neighbor.label);
+            }
+
+            callback(label);
+        };
+
+        const labels = adjacencyList.keys();
+        for(const label of labels) {
+            traverse(label);
+        }
+    };
+
     return {
         addVertex,
         getVertex,
         addEdge,
         printGraph,
+        inorderRecursive,
     };
 };
 
@@ -84,5 +108,3 @@ export const matrix = <T>(verticesNumber: number, isDirected: boolean, defaultVa
         printGraph,
     };
 };
-
-// weighted and unweighted graph

@@ -9,6 +9,7 @@ export interface IGraph<T> {
     getVertex: (label: string|number) => INode<T>[]|null;
     addEdge: (vertex1: INode<T>, vertex2: INode<T>) => void;
     printGraph: () => void;
+    inorderRecursive: (callback: (label: string|number) => void) => void;
 }
 
 export type AdjacencyMatrix<T> = T[][];
