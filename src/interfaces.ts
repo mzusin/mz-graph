@@ -2,7 +2,7 @@ export type Label = string|number;
 
 export interface INode<T> {
     label: Label;
-    value: T;
+    value?: T;
 }
 
 export type AdjacencyList<T> = Map<Label, INode<T>[]>;

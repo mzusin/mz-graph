@@ -3,6 +3,22 @@ import { IGraph, INode } from '../src/interfaces';
 
 describe('Undirected Adjacency List Graph', () => {
 
+    test('Init graph with initial value', () => {
+        const myGraph: IGraph<number> = graph<number>(true, {
+            A: [{ label: 'B' }],
+            B: [{ label: 'C' }],
+            C: [],
+        });
+
+        const consoleSpy = jest.spyOn(console, 'log');
+        myGraph.printGraph();
+
+        // Test the output
+        expect(consoleSpy).toHaveBeenCalledWith('A -> [B]');
+        expect(consoleSpy).toHaveBeenCalledWith('B -> [C]');
+        expect(consoleSpy).toHaveBeenCalledWith('C -> []');
+    });
+
     test('Add Vertex', () => {
         const myGraph: IGraph<number> = graph<number>(false);
         const vertex: INode<number> = { label: 'A', value: 42 };
@@ -42,8 +58,8 @@ describe('Undirected Adjacency List Graph', () => {
         myGraph.printGraph();
 
         // Test the output
-        expect(consoleSpy).toHaveBeenCalledWith('A -> [B]');
-        expect(consoleSpy).toHaveBeenCalledWith('B -> [A]');
+        expect(consoleSpy).toHaveBeenCalledWith('A -> [B(99)]');
+        expect(consoleSpy).toHaveBeenCalledWith('B -> [A(42)]');
     });
 
     test('BFS', () => {

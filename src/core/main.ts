@@ -3,7 +3,7 @@ import { AdjacencyList, AdjacencyMatrix, IGraph, IMatrix, INode, Label } from '.
 /**
  * Adjacency List Representation
  */
-export const graph = <T>(isDirected: boolean) : IGraph<T> => {
+export const graph = <T>(isDirected: boolean, initial?: { [key: Label]: INode<T>[] }) : IGraph<T> => {
     const adjacencyList: AdjacencyList<T> = new Map();
 
     const addVertex = (vertex: INode<T>) => {
@@ -25,7 +25,10 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
 
     const printGraph = () => {
         for (const [vertex, neighbors] of adjacencyList.entries()) {
-            const neighborString = neighbors.map(neighbor => neighbor.label).join(', ');
+            const neighborString = neighbors.map(neighbor => {
+                const weight = neighbor.value !== undefined ? `(${ neighbor.value })` : '';
+                return `${ neighbor.label }${ weight }`;
+            }).join(', ');
             console.log(`${vertex} -> [${neighborString}]`);
         }
     };
@@ -127,6 +130,20 @@ export const graph = <T>(isDirected: boolean) : IGraph<T> => {
             traverse(label);
         }
     };
+
+    /**
+     * Entry Point.
+     */
+    (() => {
+        if(!initial) return;
+
+        const labels: Label[] = Object.keys(initial);
+        for(const label of labels) {
+            // @ts-ignore
+            const neighbors: INode<T>[] = initial[label] || [];
+            adjacencyList.set(label, neighbors);
+        }
+    })();
 
     return {
         addVertex,
