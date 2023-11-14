@@ -30,6 +30,8 @@ export const graph: <T>(isDirected: boolean) => IGraph<T>;
 Usage example:
 
 ```ts
+import { Label } from './interfaces';
+
 const myGraph: IGraph<number> = graph<number>(false); // true for directed graph
 const vertex: INode<number> = { label: 'A', value: 42 }; // or use number as label { label: 10, value: 42 }
 
@@ -47,6 +49,18 @@ myGraph.addEdge(vertex1, vertex2);
 
 // print the graph
 myGraph.printGraph();
+
+myGraph.bfs((label: Label) => {
+    console.log(label);
+});
+
+myGraph.dfs((label: Label) => {
+    console.log(label);
+});
+
+myGraph.dfsRecursive((label: Label) => {
+    console.log(label);
+});
 ```
 
 **Adjacency Matrix Representation**
