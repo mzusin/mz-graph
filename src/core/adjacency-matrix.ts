@@ -54,7 +54,7 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
      */
     const bfs = (callback: (row: number, col: number, value: T) => void) => {
 
-        const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+        const directions = [[0, -1], [0, 1], [-1, 0], [1, 0]];
         const queue: [number, number][] = [[0, 0]];
         const visited: boolean[][] = [];
 
