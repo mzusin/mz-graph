@@ -22,6 +22,7 @@ export interface IMatrix<T> {
     getMatrix: () => AdjacencyMatrix<T>;
     addEdge: (source: number, destination: number, weight: T) => void;
     printGraph: () => void;
+    bfs: (callback: (row: number, col: number) => void) => void;
 }
 
 export interface IAdjacencyListOptions<T> {

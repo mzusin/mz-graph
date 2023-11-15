@@ -122,7 +122,7 @@ describe('Adjacency Matrix Graph', () => {
         });
     });
 
-    describe('Add Edge', function () {
+    describe('Add Edge', () => {
 
         test('addEdge should add an edge between two vertices in undirected - 0,1,5', () => {
             const myGraph: IMatrix<number> = matrix<number>({
@@ -212,6 +212,28 @@ describe('Adjacency Matrix Graph', () => {
             expect(consoleSpy.mock.calls[0][0]).toBe('0 5 0'); // Replace with your expected output
             expect(consoleSpy.mock.calls[1][0]).toBe('5 0 8'); // Replace with your expected output
             expect(consoleSpy.mock.calls[2][0]).toBe('0 8 0'); // Replace with your expected output
+        });
+    });
+
+    describe('BFS', () => {
+        test('BFS visits all nodes in the correct order', () => {
+            const myGraph: IMatrix<number> = matrix<number>({
+                initial: [
+                    [2, 1],
+                    [1, 2],
+                ]
+            });
+
+            const visitedNodes: [number, number][] = [];
+
+            myGraph.bfs((row, col) => {
+                visitedNodes.push([row, col]);
+            });
+
+            expect(visitedNodes).toEqual([
+                [0, 0], [1, 0],
+                [0, 1], [1, 1]
+            ]);
         });
     });
 });

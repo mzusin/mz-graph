@@ -46,26 +46,49 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
         }
     };
 
-    /*
-    Тут используется **queue**, как и во всех BFS. Только в нем хранится пара значений \[i, j\], а не одно.
-2.  Начинаем с первой клетки \[0, 0\] добавляя ее в queue
-3.  Также есть **visited** array, который тоже хранит пары значений - вероятно, тоже 2х-мерный
-4.  Также нужна helper функция isValid, которая будет проверят, находится ли индекс в пределах массива, а также visited или нет
-5.  Как обычно, запускаем цикл пока очередь не пустая
-6.  Как обычно, вынимаем первый элемент очереди (**shift**)
-7.  Добавляем этот элемент в массив visited.
-8.  Находим всех unvisited kids и добавляем их в очередь - при этом мы берем 4 смежные клетки если есть (слева, справа, сверху и снизу)
-     */
-
     /**
      * BFS (Breadth First Search)
      * Generally BFS is not implemented in graphs using recursion; this is something not standard.
      * Time Complexity O(N * M)
      * Space Complexity O(N * M)
+     */
+    const bfs = (callback: (row: number, col: number) => void) => {
 
-    const bfs = () => {
+        const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
         const queue: [number, number][] = [[0, 0]];
-    };*/
+        const visited: boolean[][] = [];
+
+        for(let r=0; r<rowsCount; r++) {
+            visited[r] = [];
+        }
+
+        const isValid = (r: number, c: number) => {
+            return  r >= 0 &&
+                r < rowsCount &&
+                c >= 0 &&
+                c < columnsCount &&
+                !visited[r][c];
+        };
+
+        while(queue.length > 0){
+            const [r, c] = queue.shift() as [number, number];
+            if(visited[r][c]) continue;
+
+            visited[r][c] = true;
+
+            callback(r, c);
+
+            for(let i=0; i<directions.length; i++){
+
+                const [dr, dc] = directions[i];
+                const newR = r + dr;
+                const newC = c + dc;
+
+                if(!isValid(newR, newC)) continue;
+                queue.push([newR, newC]);
+            }
+        }
+    };
 
     /**
      * Entry Point.
@@ -90,5 +113,6 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
         getMatrix,
         addEdge,
         printGraph,
+        bfs,
     };
 };
