@@ -91,6 +91,50 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
     };
 
     /**
+     * DFS (Depth First Search)
+     * Generally BFS is not implemented in graphs using recursion; this is something not standard.
+     * Time Complexity O(N * M)
+     * Space Complexity O(N * M)
+     */
+    const dfs = (callback: (row: number, col: number, value: T) => void) => {
+
+        const directions = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+        const stack: [number, number][] = [[0, 0]];
+        const visited: boolean[][] = [];
+
+        for(let r=0; r<rowsCount; r++) {
+            visited[r] = [];
+        }
+
+        const isValid = (r: number, c: number) => {
+            return  r >= 0 &&
+                r < rowsCount &&
+                c >= 0 &&
+                c < columnsCount &&
+                !visited[r][c];
+        };
+
+        while(stack.length > 0){
+            const [r, c] = stack.pop() as [number, number];
+            if(visited[r][c]) continue;
+
+            visited[r][c] = true;
+
+            callback(r, c, adjacencyMatrix[r][c]);
+
+            for(let i=0; i<directions.length; i++){
+
+                const [dr, dc] = directions[i];
+                const newR = r + dr;
+                const newC = c + dc;
+
+                if(!isValid(newR, newC)) continue;
+                stack.push([newR, newC]);
+            }
+        }
+    };
+
+    /**
      * Entry Point.
      */
     (() => {
@@ -114,5 +158,6 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
         addEdge,
         printGraph,
         bfs,
+        dfs,
     };
 };

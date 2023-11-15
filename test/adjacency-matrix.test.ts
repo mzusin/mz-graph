@@ -215,7 +215,7 @@ describe('Adjacency Matrix Graph', () => {
         });
     });
 
-    describe('BFS', () => {
+    describe('BFS & DFS', () => {
         test('BFS visits all nodes in the correct order', () => {
             const myGraph: IMatrix<number> = matrix<number>({
                 initial: [
@@ -233,6 +233,26 @@ describe('Adjacency Matrix Graph', () => {
             expect(visitedNodes).toEqual([
                 [0, 0, 2], [0, 1, 1],
                 [1, 0, 1], [1, 1, 2]
+            ]);
+        });
+
+        test('DFS visits all nodes in the correct order', () => {
+            const myGraph: IMatrix<number> = matrix<number>({
+                initial: [
+                    [2, 1],
+                    [1, 2],
+                ]
+            });
+
+            const visitedNodes: [number, number, number][] = [];
+
+            myGraph.dfs((row, col, val) => {
+                visitedNodes.push([row, col, val]);
+            });
+
+            expect(visitedNodes).toEqual([
+                [0, 0, 2], [1, 0, 1],
+                [1, 1, 2], [0, 1, 1],
             ]);
         });
     });

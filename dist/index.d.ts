@@ -25,6 +25,7 @@ declare module 'mz-graph' {
         addEdge: (source: number, destination: number, weight: T) => void;
         printGraph: () => void;
         bfs: (callback: (row: number, col: number, value: T) => void) => void;
+        dfs: (callback: (row: number, col: number, value: T) => void) => void;
     }
 
     export interface IAdjacencyListOptions<T> {
