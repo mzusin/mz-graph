@@ -224,15 +224,15 @@ describe('Adjacency Matrix Graph', () => {
                 ]
             });
 
-            const visitedNodes: [number, number][] = [];
+            const visitedNodes: [number, number, number][] = [];
 
-            myGraph.bfs((row, col) => {
-                visitedNodes.push([row, col]);
+            myGraph.bfs((row, col, val) => {
+                visitedNodes.push([row, col, val]);
             });
 
             expect(visitedNodes).toEqual([
-                [0, 0], [1, 0],
-                [0, 1], [1, 1]
+                [0, 0, 2], [1, 0, 1],
+                [0, 1, 1], [1, 1, 2]
             ]);
         });
     });

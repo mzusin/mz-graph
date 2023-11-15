@@ -88,7 +88,7 @@ export interface IMatrix<T> {
     getMatrix: () => AdjacencyMatrix<T>;
     addEdge: (source: number, destination: number, weight: T) => void;
     printGraph: () => void;
-    bfs: (callback: (row: number, col: number) => void) => void;
+    bfs: (callback: (row: number, col: number, value: T) => void) => void;
 }
 
 export interface IAdjacencyMatrixOptions<T> {
@@ -130,4 +130,8 @@ const res = myGraph.getMatrix();
 
 // print the matrix
 myGraph.printGraph();
+
+myGraph.bfs((row: number, col: number, value: number) => {
+    console.log(row, col, value);
+});
 ```

@@ -52,7 +52,7 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
      * Time Complexity O(N * M)
      * Space Complexity O(N * M)
      */
-    const bfs = (callback: (row: number, col: number) => void) => {
+    const bfs = (callback: (row: number, col: number, value: T) => void) => {
 
         const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
         const queue: [number, number][] = [[0, 0]];
@@ -76,7 +76,7 @@ export const matrix = <T>(options: IAdjacencyMatrixOptions<T>) : IMatrix<T> => {
 
             visited[r][c] = true;
 
-            callback(r, c);
+            callback(r, c, adjacencyMatrix[r][c]);
 
             for(let i=0; i<directions.length; i++){
 
