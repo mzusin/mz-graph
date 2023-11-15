@@ -20,7 +20,7 @@ export interface IGraph<T> {
 export type AdjacencyMatrix<T> = T[][];
 export interface IMatrix<T> {
     getMatrix: () => AdjacencyMatrix<T>;
-    addEdge: (source: Label, destination: Label, weight: T) => void;
+    addEdge: (source: number, destination: number, weight: T) => void;
     printGraph: () => void;
 }
 
@@ -31,7 +31,8 @@ export interface IAdjacencyListOptions<T> {
 
 export interface IAdjacencyMatrixOptions<T> {
     isDirected?: boolean;
-    verticesNumber?: number;
+    rowsCount?: number;
+    columnsCount?: number;
     defaultValue?: T;
     initial?: T[][];
 }
