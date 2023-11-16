@@ -1,3 +1,4 @@
+import PriorityQueue from 'priorityqueuejs';
 import {
     AdjacencyList,
     IGraph,
@@ -235,6 +236,61 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     };
 
     /**
+     * Use a priority queue (min heap) to efficiently select the vertex with the smallest distance at each step.
+     * Note that this implementation assumes non-negative weights for edges.
+     * If your graph may contain negative weights, consider using Bellman-Ford algorithm.
+     */
+    const findShortestPathDijkstra = (startLabel: Label) : Map<Label, number> => {
+
+        const visited: Set<Label> = new Set();
+
+        // @ts-ignore
+        const priorityQueue = new PriorityQueue<{ label: Label; distance: number }>({ comparator: (a, b) => a.distance - b.distance });
+
+        // ----- Init the distances ------------------
+        // The distances object keeps track of the distances from the start node to each node in the graph.
+        // The algorithm continues until all reachable nodes are visited.
+        const distances = new Map<Label, number>();
+
+        // Initialize distances with Infinity.
+        for(const vertex of adjacencyList.keys()) {
+            distances.set(vertex, Infinity);
+        }
+
+        // Initialize start node as 0.
+        distances.set(startLabel, 0);
+
+        // ------------------------------------------
+
+        priorityQueue.enq({ label: startLabel, distance: 0 });
+
+        while (!priorityQueue.isEmpty()) {
+            // @ts-ignore
+            const { label, distance } = priorityQueue.deq();
+
+            if (visited.has(label)) continue;
+            visited.add(label);
+
+            const neighbors = getVertex(label) || [];
+            for (const neighbor of neighbors) {
+
+                const edgeWeight = neighbor.value ?? 0; // Assuming weights are non-negative
+                // @ts-ignore
+                const newDistance = distances[label] + edgeWeight;
+
+                // @ts-ignore
+                if (newDistance < distances[neighbor.label]) {
+                    // @ts-ignore
+                    distances[neighbor.label] = newDistance;
+                    priorityQueue.enq({ label: neighbor.label, distance: newDistance });
+                }
+            }
+        }
+
+        return distances;
+    };
+
+    /**
      * Entry Point.
      */
     (() => {
@@ -259,5 +315,6 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
         dfsRecursive,
 
         hasCycle,
+        findShortestPathDijkstra,
     };
 };

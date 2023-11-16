@@ -17,6 +17,7 @@ export interface IGraph<T> {
     dfsRecursive: (callback: (label: Label, startLabel?: Label) => void) => void;
 
     hasCycle: () => boolean;
+    findShortestPathDijkstra: (startLabel: Label) => Map<Label, number>;
 }
 
 export type AdjacencyMatrix<T> = T[][];

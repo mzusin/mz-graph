@@ -213,6 +213,39 @@ describe('Undirected Adjacency List Graph', () => {
         });
     });
 
+    describe('Dijkstra', () => {
+        test('Dijkstra Shortest Distances 1', () => {
+
+            const myGraph: IGraph<number> = graph<number>({
+                isDirected: false,
+
+                /*
+                initial: {
+                    A: [{ label: 'B' }],
+                    B: [{ label: 'C' }],
+                },*/
+            });
+
+            //const vertexA = { label: 'A', value: 42 };
+            //const vertexB = { label: 'B', value: 99 };
+            //const vertexC = { label: 'C', value: 77 };
+
+            /*
+            myGraph.addVertex(vertexA);
+            myGraph.addVertex(vertexB);
+            myGraph.addVertex(vertexC);
+
+            myGraph.addEdge(vertexA, vertexB, 5); // Edge from A to B with weight 5
+            myGraph.addEdge(vertexB, vertexC, 8); // Edge from B to C with weight 8
+
+            const distances = dijkstra(myGraph, vertexA);
+
+            // Check the calculated distances
+            expect(distances).toEqual({ A: 0, B: 5, C: 13 });
+            */
+        });
+    });
+
 });
 
 describe('Directed Adjacency List Graph', () => {
