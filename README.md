@@ -7,16 +7,17 @@ Typescript implementation of graphs.
 ```ts
 export type Label = string|number;
 
-export interface INode<T> {
+export interface IVertex<T> {
     label: Label;
-    value: T;
+    edgeWeight: T;
 }
 
-export type AdjacencyList<T> = Map<Label, INode<T>[]>;
+export type AdjacencyList<T> = Map<Label, IVertex<T>[]>;
 export interface IGraph<T> {
-    addVertex: (vertex: INode<T>) => void;
-    getVertex: (label: Label) => INode<T>[]|null;
-    addEdge: (vertex1: INode<T>, vertex2: INode<T>) => void;
+    addVertex: (label: Label) => void;
+    getVertex: (label: Label) => IVertex<T>[]|null;
+    hasVertex: (label: Label) => boolean;
+    addEdge: (source: Label, destination: Label, edgeWeight?: T) => void;
     printGraph: () => void;
 
     bfs: (callback: (label: Label) => void, startLabel?: Label) => void;
@@ -28,7 +29,7 @@ export interface IGraph<T> {
 
 export interface IAdjacencyListOptions<T> {
     isDirected?: boolean;
-    initial?: { [key: Label]: INode<T>[] };
+    initial?: { [key: Label]: IVertex<T>[] };
 }
 
 export const graph: <T>(options: IAdjacencyListOptions<T>) => IGraph<T>;
@@ -40,8 +41,8 @@ Usage example:
 const myGraph: IGraph<number> = graph<number>({
     isDirected: true,
     initial: {
-        A: [{ label: 'B', value: 10 }],
-        B: [{ label: 'C', value: 20 }],
+        A: [{ label: 'B', edgeWeight: 10 }],
+        B: [{ label: 'C', edgeWeight: 20 }],
         C: [],
     }
 });
@@ -51,19 +52,16 @@ const myGraph: IGraph<number> = graph<number>({
 const myGraph: IGraph<number> = graph<number>({
     isDirected: false
 });
-const vertex: INode<number> = { label: 'A', value: 42 }; // or use number as label { label: 10, value: 42 }
 
 // add/get a vertex
-myGraph.addVertex(vertex);
+myGraph.addVertex('A'); // or use a number myGraph.addVertex(10);
 console.log(myGraph.getVertex('A'));
 
 // add an edge
-const vertex1: INode<number> = { label: 'B', value: 42 };
-const vertex2: INode<number> = { label: 'C', value: 99 };
-
-myGraph.addVertex(vertex1);
-myGraph.addVertex(vertex2);
-myGraph.addEdge(vertex1, vertex2);
+myGraph.addVertex('B');
+myGraph.addVertex('C');
+myGraph.addEdge('A', 'B', 10);
+myGraph.addEdge('B', 'C');
 
 // print the graph
 myGraph.printGraph();

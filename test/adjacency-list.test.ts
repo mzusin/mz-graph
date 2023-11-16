@@ -1,5 +1,5 @@
 import { graph } from '../src/core/adjacency-list';
-import { IGraph, INode } from '../src/interfaces';
+import { IGraph } from '../src/interfaces';
 
 describe('Undirected Adjacency List Graph', () => {
 
@@ -26,8 +26,8 @@ describe('Undirected Adjacency List Graph', () => {
         const myGraph: IGraph<number> = graph<number>({
             isDirected: true,
             initial: {
-                A: [{ label: 'B', value: 10 }],
-                B: [{ label: 'C', value: 20 }],
+                A: [{ label: 'B', edgeWeight: 10 }],
+                B: [{ label: 'C', edgeWeight: 20 }],
                 C: [],
             }
         });
@@ -45,9 +45,8 @@ describe('Undirected Adjacency List Graph', () => {
         const myGraph: IGraph<number> = graph<number>({
             isDirected: false
         });
-        const vertex: INode<number> = { label: 'A', value: 42 };
-        myGraph.addVertex(vertex);
-        expect(myGraph.getVertex('A')).toBeDefined();
+        myGraph.addVertex('A');
+        expect(myGraph.hasVertex('A'));
     });
 
     test('Add Edge', () => {
@@ -55,18 +54,15 @@ describe('Undirected Adjacency List Graph', () => {
             isDirected: false
         });
 
-        const vertex1: INode<number> = { label: 'A', value: 42 };
-        const vertex2: INode<number> = { label: 'B', value: 99 };
-
-        myGraph.addVertex(vertex1);
-        myGraph.addVertex(vertex2);
-        myGraph.addEdge(vertex1, vertex2);
+        myGraph.addVertex('A');
+        myGraph.addVertex('B');
+        myGraph.addEdge('A', 'B', 42);
 
         const neighborsA = myGraph.getVertex('A');
         const neighborsB = myGraph.getVertex('B');
 
-        expect(neighborsA).toContain(vertex2);
-        expect(neighborsB).toContain(vertex1);
+        expect(neighborsA).toContainEqual({ label: 'B', edgeWeight: 42 });
+        expect(neighborsB).toContainEqual({ label: 'A', edgeWeight: 42 });
     });
 
     test('Print Graph', () => {
@@ -74,12 +70,9 @@ describe('Undirected Adjacency List Graph', () => {
             isDirected: false
         });
 
-        const vertex1: INode<number> = { label: 'A', value: 42 };
-        const vertex2: INode<number> = { label: 'B', value: 99 };
-
-        myGraph.addVertex(vertex1);
-        myGraph.addVertex(vertex2);
-        myGraph.addEdge(vertex1, vertex2);
+        myGraph.addVertex('A');
+        myGraph.addVertex('B');
+        myGraph.addEdge('A', 'B', 99);
 
         // Redirect console.log to capture the output
         const consoleSpy = jest.spyOn(console, 'log');
@@ -87,7 +80,7 @@ describe('Undirected Adjacency List Graph', () => {
 
         // Test the output
         expect(consoleSpy).toHaveBeenCalledWith('A -> [B(99)]');
-        expect(consoleSpy).toHaveBeenCalledWith('B -> [A(42)]');
+        expect(consoleSpy).toHaveBeenCalledWith('B -> [A(99)]');
     });
 
     test('BFS', () => {
@@ -95,19 +88,14 @@ describe('Undirected Adjacency List Graph', () => {
             isDirected: false
         });
 
-        const vertexA: INode<number> = { label: 'A', value: 42 };
-        const vertexB: INode<number> = { label: 'B', value: 99 };
-        const vertexC: INode<number> = { label: 'C', value: 77 };
-        const vertexD: INode<number> = { label: 'D', value: 55 };
+        myGraph.addVertex('A');
+        myGraph.addVertex('B');
+        myGraph.addVertex('C');
+        myGraph.addVertex('D');
 
-        myGraph.addVertex(vertexA);
-        myGraph.addVertex(vertexB);
-        myGraph.addVertex(vertexC);
-        myGraph.addVertex(vertexD);
-
-        myGraph.addEdge(vertexA, vertexB);
-        myGraph.addEdge(vertexA, vertexC);
-        myGraph.addEdge(vertexB, vertexD);
+        myGraph.addEdge('A', 'B');
+        myGraph.addEdge('A', 'C');
+        myGraph.addEdge('B', 'D');
 
         const callback = jest.fn();
         myGraph.bfs(callback);
@@ -125,16 +113,12 @@ describe('Undirected Adjacency List Graph', () => {
             isDirected: false
         });
 
-        const vertexA: INode<number> = { label: 'A', value: 42 };
-        const vertexB: INode<number> = { label: 'B', value: 99 };
-        const vertexC: INode<number> = { label: 'C', value: 77 };
+        myGraph.addVertex('A');
+        myGraph.addVertex('B');
+        myGraph.addVertex('C');
 
-        myGraph.addVertex(vertexA);
-        myGraph.addVertex(vertexB);
-        myGraph.addVertex(vertexC);
-
-        myGraph.addEdge(vertexA, vertexB);
-        myGraph.addEdge(vertexB, vertexC);
+        myGraph.addEdge('A', 'B');
+        myGraph.addEdge('B', 'C');
 
         const callback = jest.fn();
         myGraph.dfs(callback);
@@ -151,16 +135,12 @@ describe('Undirected Adjacency List Graph', () => {
             isDirected: false
         });
 
-        const vertexA: INode<number> = { label: 'A', value: 42 };
-        const vertexB: INode<number> = { label: 'B', value: 99 };
-        const vertexC: INode<number> = { label: 'C', value: 77 };
+        myGraph.addVertex('A');
+        myGraph.addVertex('B');
+        myGraph.addVertex('C');
 
-        myGraph.addVertex(vertexA);
-        myGraph.addVertex(vertexB);
-        myGraph.addVertex(vertexC);
-
-        myGraph.addEdge(vertexA, vertexB);
-        myGraph.addEdge(vertexB, vertexC);
+        myGraph.addEdge('A', 'B');
+        myGraph.addEdge('B', 'C');
 
         const callback = jest.fn();
         myGraph.dfsRecursive(callback);
@@ -213,24 +193,26 @@ describe('Undirected Adjacency List Graph', () => {
         });
     });
 
+/*
+
     describe('Dijkstra', () => {
         test('Dijkstra Shortest Distances 1', () => {
 
             const myGraph: IGraph<number> = graph<number>({
                 isDirected: false,
 
-                /*
+                /!*
                 initial: {
                     A: [{ label: 'B' }],
                     B: [{ label: 'C' }],
-                },*/
+                },*!/
             });
 
-            //const vertexA = { label: 'A', value: 42 };
-            //const vertexB = { label: 'B', value: 99 };
-            //const vertexC = { label: 'C', value: 77 };
+            //const vertexA = { label: 'A', edgeWeight: 42 };
+            //const vertexB = { label: 'B', edgeWeight: 99 };
+            //const vertexC = { label: 'C', edgeWeight: 77 };
 
-            /*
+            /!*
             myGraph.addVertex(vertexA);
             myGraph.addVertex(vertexB);
             myGraph.addVertex(vertexC);
@@ -242,9 +224,9 @@ describe('Undirected Adjacency List Graph', () => {
 
             // Check the calculated distances
             expect(distances).toEqual({ A: 0, B: 5, C: 13 });
-            */
+            *!/
         });
-    });
+    });*/
 
 });
 
@@ -254,8 +236,7 @@ describe('Directed Adjacency List Graph', () => {
         const myGraph: IGraph<number> = graph<number>({
             isDirected: true
         });
-        const vertex: INode<number> = { label: 'A', value: 42 };
-        myGraph.addVertex(vertex);
+        myGraph.addVertex('A');
         expect(myGraph.getVertex('A')).toBeDefined();
     });
 
@@ -264,18 +245,15 @@ describe('Directed Adjacency List Graph', () => {
             isDirected: true
         });
 
-        const vertex1: INode<number> = { label: 'A', value: 42 };
-        const vertex2: INode<number> = { label: 'B', value: 99 };
-
-        myGraph.addVertex(vertex1);
-        myGraph.addVertex(vertex2);
-        myGraph.addEdge(vertex1, vertex2);
+        myGraph.addVertex('A');
+        myGraph.addVertex('B');
+        myGraph.addEdge('A', 'B');
 
         const neighborsA = myGraph.getVertex('A');
         const neighborsB = myGraph.getVertex('B');
 
-        expect(neighborsA).toContain(vertex2);
-        expect(neighborsB).not.toContain(vertex1);
+        expect(neighborsA).toContainEqual({ label: 'B' });
+        expect(neighborsB).not.toContainEqual({ label: 'A' });
     });
 
     test('Print Graph', () => {
@@ -283,12 +261,12 @@ describe('Directed Adjacency List Graph', () => {
             isDirected: true
         });
 
-        const vertex1: INode<number> = { label: 'A', value: 42 };
-        const vertex2: INode<number> = { label: 'B', value: 99 };
+        //const vertex1: IVertex<number> = { label: 'A', edgeWeight: 42 };
+        //const vertex2: IVertex<number> = { label: 'B', edgeWeight: 99 };
 
-        myGraph.addVertex(vertex1);
-        myGraph.addVertex(vertex2);
-        myGraph.addEdge(vertex1, vertex2);
+        myGraph.addVertex('A');
+        myGraph.addVertex('B');
+        myGraph.addEdge('A', 'B', 99);
 
         // Redirect console.log to capture the output
         const consoleSpy = jest.spyOn(console, 'log');
@@ -340,3 +318,4 @@ describe('Directed Adjacency List Graph', () => {
         });
     });
 });
+

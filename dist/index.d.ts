@@ -2,16 +2,17 @@ declare module 'mz-graph' {
 
     export type Label = string|number;
 
-    export interface INode<T> {
+    export interface IVertex<T> {
         label: Label;
-        value: T;
+        edgeWeight: T;
     }
 
-    export type AdjacencyList<T> = Map<Label, INode<T>[]>;
+    export type AdjacencyList<T> = Map<Label, IVertex<T>[]>;
     export interface IGraph<T> {
-        addVertex: (vertex: INode<T>) => void;
-        getVertex: (label: Label) => INode<T>[]|null;
-        addEdge: (vertex1: INode<T>, vertex2: INode<T>) => void;
+        addVertex: (label: Label) => void;
+        getVertex: (label: Label) => IVertex<T>[]|null;
+        hasVertex: (label: Label) => boolean;
+        addEdge: (source: Label, destination: Label, edgeWeight?: T) => void;
         printGraph: () => void;
 
         bfs: (callback: (label: Label, startLabel?: Label) => void) => void;
@@ -32,7 +33,7 @@ declare module 'mz-graph' {
 
     export interface IAdjacencyListOptions<T> {
         isDirected?: boolean;
-        initial?: { [key: Label]: INode<T>[] };
+        initial?: { [key: Label]: IVertex<T>[] };
     }
 
     export const graph: <T>(options: IAdjacencyListOptions<T>) => IGraph<T>;

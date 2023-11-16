@@ -1,8 +1,8 @@
-import PriorityQueue from 'priorityqueuejs';
+import PriorityQueue from 'priorityqueuejs'; // https://github.com/janogonzalez/priorityqueuejs
 import {
     AdjacencyList,
     IGraph,
-    INode,
+    IVertex,
     Label,
     IAdjacencyListOptions,
 } from '../interfaces';
@@ -13,27 +13,37 @@ import {
 export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     const adjacencyList: AdjacencyList<T> = new Map();
 
-    const addVertex = (vertex: INode<T>) => {
-        if(adjacencyList.has(vertex.label)) return;
-        adjacencyList.set(vertex.label, []);
+    const addVertex = (label: Label) => {
+        if(adjacencyList.has(label)) return;
+        adjacencyList.set(label, []);
     };
 
-    const getVertex = (label: Label) : INode<T>[]|null => {
+    const hasVertex = (label: Label) : boolean => {
+        return adjacencyList.has(label);
+    };
+
+    const getVertex = (label: Label) : IVertex<T>[]|null => {
         return adjacencyList.get(label) ?? null;
     };
 
-    const addEdge = (source: INode<T>, destination: INode<T>) => {
-        adjacencyList.get(source.label)?.push(destination);
+    const addEdge = (source: Label, destination: Label, edgeWeight?: T) => {
+        adjacencyList.get(source)?.push({
+            label: destination,
+            edgeWeight,
+        });
 
         if(!options.isDirected) {
-            adjacencyList.get(destination.label)?.push(source);
+            adjacencyList.get(destination)?.push({
+                label: source,
+                edgeWeight
+            });
         }
     };
 
     const printGraph = () => {
         for (const [vertex, neighbors] of adjacencyList.entries()) {
             const neighborString = neighbors.map(neighbor => {
-                const weight = neighbor.value !== undefined ? `(${ neighbor.value })` : '';
+                const weight = neighbor.edgeWeight !== undefined ? `(${ neighbor.edgeWeight })` : '';
                 return `${ neighbor.label }${ weight }`;
             }).join(', ');
             console.log(`${vertex} -> [${neighborString}]`);
@@ -236,6 +246,7 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     };
 
     /**
+     * BFS with a priority queue.
      * Use a priority queue (min heap) to efficiently select the vertex with the smallest distance at each step.
      * Note that this implementation assumes non-negative weights for edges.
      * If your graph may contain negative weights, consider using Bellman-Ford algorithm.
@@ -265,6 +276,9 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
         priorityQueue.enq({ label: startLabel, distance: 0 });
 
         while (!priorityQueue.isEmpty()) {
+
+            // Find a vertex that is not visited and is on a minimal distance.
+
             // @ts-ignore
             const { label, distance } = priorityQueue.deq();
 
@@ -274,14 +288,17 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
             const neighbors = getVertex(label) || [];
             for (const neighbor of neighbors) {
 
-                const edgeWeight = neighbor.value ?? 0; // Assuming weights are non-negative
+                const edgeWeight = neighbor.edgeWeight ?? 0; // Assuming weights are non-negative
                 // @ts-ignore
                 const newDistance = distances[label] + edgeWeight;
+
+                // if (distance(V) + edge weight) is smaller than чем distance(kid) ----> update kid distance
 
                 // @ts-ignore
                 if (newDistance < distances[neighbor.label]) {
                     // @ts-ignore
                     distances[neighbor.label] = newDistance;
+
                     priorityQueue.enq({ label: neighbor.label, distance: newDistance });
                 }
             }
@@ -299,7 +316,7 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
         const labels: Label[] = Object.keys(options.initial);
         for(const label of labels) {
             // @ts-ignore
-            const neighbors: INode<T>[] = options.initial[label] || [];
+            const neighbors: IVertex<T>[] = options.initial[label] || [];
             adjacencyList.set(label, neighbors);
         }
     })();
@@ -307,6 +324,7 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     return {
         addVertex,
         getVertex,
+        hasVertex,
         addEdge,
         printGraph,
 
