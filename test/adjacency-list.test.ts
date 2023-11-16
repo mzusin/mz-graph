@@ -224,4 +224,45 @@ describe('Directed Adjacency List Graph', () => {
         expect(consoleSpy).toHaveBeenCalledWith('A -> [B(99)]');
         expect(consoleSpy).toHaveBeenCalledWith('B -> []');
     });
+
+    describe('Cycle Detection', () => {
+        test('Empty graph has no cycle', () => {
+            const myGraph: IGraph<number> = graph<number>({
+                isDirected: true,
+                initial: {
+
+                },
+            });
+
+            expect(myGraph.hasCycle).toBeTruthy();
+        });
+
+        test('A -> B -> C -> D -> A has a cycle', () => {
+            const myGraph: IGraph<number> = graph<number>({
+                isDirected: true,
+                initial: {
+                    A: [{ label: 'B' }],
+                    B: [{ label: 'C' }],
+                    C: [{ label: 'D' }],
+                    D: [{ label: 'A' }],
+                },
+            });
+
+            expect(myGraph.hasCycle).toBeTruthy();
+        });
+
+        test('A -> B -> C -> D has no cycle', () => {
+            const myGraph: IGraph<number> = graph<number>({
+                isDirected: true,
+                initial: {
+                    A: [{ label: 'B' }],
+                    B: [{ label: 'C' }],
+                    C: [{ label: 'D' }],
+                    D: [],
+                },
+            });
+
+            expect(myGraph.hasCycle).toBeTruthy();
+        });
+    });
 });

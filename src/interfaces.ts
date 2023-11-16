@@ -15,6 +15,8 @@ export interface IGraph<T> {
     bfs: (callback: (label: Label) => void, startLabel?: Label) => void;
     dfs: (callback: (label: Label) => void, startLabel?: Label) => void;
     dfsRecursive: (callback: (label: Label, startLabel?: Label) => void) => void;
+
+    hasCycle: () => boolean;
 }
 
 export type AdjacencyMatrix<T> = T[][];
