@@ -14,9 +14,9 @@ declare module 'mz-graph' {
         addEdge: (vertex1: INode<T>, vertex2: INode<T>) => void;
         printGraph: () => void;
 
-        bfs: (callback: (label: Label) => void) => void;
-        dfs: (callback: (label: Label) => void) => void;
-        dfsRecursive: (callback: (label: Label) => void) => void;
+        bfs: (callback: (label: Label, startLabel?: Label) => void) => void;
+        dfs: (callback: (label: Label, startLabel?: Label) => void) => void;
+        dfsRecursive: (callback: (label: Label) => void, startLabel?: Label) => void;
     }
 
     export type AdjacencyMatrix<T> = T[][];

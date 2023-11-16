@@ -43,7 +43,7 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
      * BFS (Breadth First Search)
      * Generally BFS is not implemented in graphs using recursion; this is something not standard.
      */
-    const bfs = (callback: (label: Label) => void) => {
+    const bfs = (callback: (label: Label) => void, startLabel?: Label) => {
         const visited: Set<Label> = new Set();
 
         const traverse = (startLabel: Label) => {
@@ -66,6 +66,11 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
             }
         };
 
+        if(startLabel !== undefined) {
+            traverse(startLabel);
+            return;
+        }
+
         // handle disconnected nodes
         const labels = adjacencyList.keys();
         for (const label of labels) {
@@ -77,7 +82,7 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     /**
      * DFS (Depth First Search)
      */
-    const dfs = (callback: (label: Label) => void) : void => {
+    const dfs = (callback: (label: Label) => void, startLabel?: Label) : void => {
 
         const visited: Set<Label> = new Set();
 
@@ -101,6 +106,11 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
             }
         };
 
+        if(startLabel !== undefined) {
+            traverse(startLabel);
+            return;
+        }
+
         // handle disconnected nodes
         const labels = adjacencyList.keys();
         for (const label of labels) {
@@ -112,7 +122,7 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     /**
      * DFS (Depth First Search)
      */
-    const dfsRecursive = (callback: (label: Label) => void) : void => {
+    const dfsRecursive = (callback: (label: Label) => void, startLabel?: Label) : void => {
 
         const visited: Set<Label> = new Set();
 
@@ -129,6 +139,11 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
                 traverse(neighbor.label);
             }
         };
+
+        if(startLabel !== undefined) {
+            traverse(startLabel);
+            return;
+        }
 
         // handle disconnected nodes
         const labels = adjacencyList.keys();
