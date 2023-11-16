@@ -25,6 +25,7 @@ export interface IGraph<T> {
     dfsRecursive: (callback: (label: Label, startLabel?: Label) => void) => void;
 
     hasCycle: () => boolean;
+    findShortestPathDijkstra: (startLabel: Label) => Map<Label, number>;
 }
 
 export interface IAdjacencyListOptions<T> {
@@ -79,6 +80,8 @@ myGraph.dfsRecursive((label: Label) => {
 });
 
 console.log(myGraph.hasCycle()); // true or false
+
+const distances = myGraph.findShortestPathDijkstra('A');
 ```
 
 **Adjacency Matrix Representation**

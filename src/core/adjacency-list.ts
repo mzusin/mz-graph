@@ -277,27 +277,23 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
 
         while (!priorityQueue.isEmpty()) {
 
-            // Find a vertex that is not visited and is on a minimal distance.
-
-            // @ts-ignore
-            const { label, distance } = priorityQueue.deq();
+            const { label } = priorityQueue.deq();
 
             if (visited.has(label)) continue;
             visited.add(label);
 
             const neighbors = getVertex(label) || [];
+
             for (const neighbor of neighbors) {
 
-                const edgeWeight = neighbor.edgeWeight ?? 0; // Assuming weights are non-negative
-                // @ts-ignore
-                const newDistance = distances[label] + edgeWeight;
+                const edgeWeight = neighbor.edgeWeight as number; // Assuming weights are non-negative
+                const distance = distances.get(label) ?? 0;
+                const newDistance = distance + edgeWeight;
 
-                // if (distance(V) + edge weight) is smaller than чем distance(kid) ----> update kid distance
+                const neighborDistance = distances.get(neighbor.label) ?? Infinity;
 
-                // @ts-ignore
-                if (newDistance < distances[neighbor.label]) {
-                    // @ts-ignore
-                    distances[neighbor.label] = newDistance;
+                if (newDistance < neighborDistance) {
+                    distances.set(neighbor.label, newDistance);
 
                     priorityQueue.enq({ label: neighbor.label, distance: newDistance });
                 }

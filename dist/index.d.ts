@@ -20,6 +20,7 @@ declare module 'mz-graph' {
         dfsRecursive: (callback: (label: Label) => void, startLabel?: Label) => void;
 
         hasCycle: () => boolean;
+        findShortestPathDijkstra: (startLabel: Label) => Map<Label, number>;
     }
 
     export type AdjacencyMatrix<T> = T[][];
