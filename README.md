@@ -22,6 +22,8 @@ export interface IGraph<T> {
     bfs: (callback: (label: Label) => void, startLabel?: Label) => void;
     dfs: (callback: (label: Label) => void, startLabel?: Label) => void;
     dfsRecursive: (callback: (label: Label, startLabel?: Label) => void) => void;
+
+    hasCycle: () => boolean;
 }
 
 export interface IAdjacencyListOptions<T> {
@@ -77,6 +79,8 @@ myGraph.dfs((label: Label) => {
 myGraph.dfsRecursive((label: Label) => {
     console.log(label);
 });
+
+console.log(myGraph.hasCycle()); // true or false
 ```
 
 **Adjacency Matrix Representation**

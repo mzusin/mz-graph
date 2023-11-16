@@ -17,6 +17,8 @@ declare module 'mz-graph' {
         bfs: (callback: (label: Label, startLabel?: Label) => void) => void;
         dfs: (callback: (label: Label, startLabel?: Label) => void) => void;
         dfsRecursive: (callback: (label: Label) => void, startLabel?: Label) => void;
+
+        hasCycle: () => boolean;
     }
 
     export type AdjacencyMatrix<T> = T[][];

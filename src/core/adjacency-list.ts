@@ -154,9 +154,46 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
 
     /**
      * The intuition:
+     * We need to find a vertex that is visited and is not a parent (using DFS).
+     */
+    const hasCycleInUndirectedGraph = () : boolean => {
+        const visited: Set<Label> = new Set();
+
+        const traverse = (startLabel: Label) : boolean => {
+
+            const stack: (Label)[] = [ startLabel ];
+            visited.add(startLabel);
+
+            while (stack.length > 0) {
+                const currentLabel = stack.pop() as Label;
+
+                const neighbors = getVertex(currentLabel) || [];
+                for (const neighbor of neighbors) {
+                    if(neighbor.label !== currentLabel && visited.has(neighbor.label)) return true;
+
+                    visited.add(neighbor.label);
+                    stack.push(neighbor.label);
+                }
+            }
+
+            return false;
+        };
+
+        // handle disconnected nodes
+        const labels = adjacencyList.keys();
+        for (const label of labels) {
+            if(visited.has(label)) continue;
+            if(traverse(label)) return true;
+        }
+
+        return false;
+    };
+
+    /**
+     * The intuition:
      * We need to find an edge directed to one of the visited vertices (using DFS).
      */
-    const hasCycle = () : boolean => {
+    const hasCycleInDirectedGraph = () : boolean => {
         const visited: Set<Label> = new Set();
 
         const traverse = (startLabel: Label) : boolean => {
@@ -187,6 +224,14 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
         }
 
         return false;
+    };
+
+    const hasCycle = () : boolean => {
+        if(options.isDirected) {
+            return hasCycleInDirectedGraph();
+        }
+
+        return hasCycleInUndirectedGraph();
     };
 
     /**

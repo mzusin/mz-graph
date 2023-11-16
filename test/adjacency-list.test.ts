@@ -172,6 +172,47 @@ describe('Undirected Adjacency List Graph', () => {
         expect(callback).toHaveBeenCalledTimes(3);
     });
 
+    describe('Cycle Detection', () => {
+        test('Empty graph has no cycle', () => {
+            const myGraph: IGraph<number> = graph<number>({
+                isDirected: false,
+                initial: {
+
+                },
+            });
+
+            expect(myGraph.hasCycle).toBeTruthy();
+        });
+
+        test('A - B - C - D - A has a cycle', () => {
+            const myGraph: IGraph<number> = graph<number>({
+                isDirected: false,
+                initial: {
+                    A: [{ label: 'B' }, { label: 'D' }],
+                    B: [{ label: 'C' }, { label: 'A' }],
+                    C: [{ label: 'B' }, { label: 'D' }],
+                    D: [{ label: 'A' }, { label: 'C' }],
+                },
+            });
+
+            expect(myGraph.hasCycle).toBeTruthy();
+        });
+
+        test('A - B - C - D has no cycle', () => {
+            const myGraph: IGraph<number> = graph<number>({
+                isDirected: false,
+                initial: {
+                    A: [{ label: 'B' }],
+                    B: [{ label: 'C' }, { label: 'A' }],
+                    C: [{ label: 'B' }, { label: 'D' }],
+                    D: [{ label: 'C' }],
+                },
+            });
+
+            expect(myGraph.hasCycle).toBeTruthy();
+        });
+    });
+
 });
 
 describe('Directed Adjacency List Graph', () => {
