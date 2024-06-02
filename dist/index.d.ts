@@ -48,4 +48,10 @@ declare module 'mz-graph' {
     }
 
     export const matrix: <T>(options: IAdjacencyMatrixOptions<T>) => IMatrix<T>;
+
+    export interface IUnionFind {
+        union: (node1: number, node2: number) => boolean;
+        find: (node: number) => number;
+    }
+    export const unionFind: (size: number) => IUnionFind;
 }
