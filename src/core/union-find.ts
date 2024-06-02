@@ -74,6 +74,7 @@ export const unionFind = (size: number) : IUnionFind => {
         const root1 = find(node1);
         const root2 = find(node2);
 
+        // Union should return false for already connected nodes.
         if (root1 !== root2) {
             // Union by rank to keep tree shallow
             if (rank[root1] > rank[root2]) {
