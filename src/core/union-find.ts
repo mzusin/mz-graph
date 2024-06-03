@@ -97,6 +97,7 @@ export const unionFind = (size: number) : IUnionFind => {
                     parent[root2] = root1;
 
                     // Update tree depth.
+                    // Ensure the tree remains balanced.
                     rank[root1] += 1;
                 }
             }
