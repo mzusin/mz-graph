@@ -145,3 +145,26 @@ myGraph.dfs((row: number, col: number, value: number) => {
     console.log(row, col, value);
 });
 ```
+
+**Union-Find**
+```ts
+const uf: IUnionFind = unionFind(5);
+
+expect(uf.union(0, 1)).toBe(true);
+expect(uf.find(0)).toBe(0);
+expect(uf.find(1)).toBe(0);
+
+expect(uf.union(1, 2)).toBe(true);
+expect(uf.find(2)).toBe(0);
+
+expect(uf.union(3, 4)).toBe(true);
+expect(uf.find(3)).toBe(3);
+expect(uf.find(4)).toBe(3);
+
+expect(uf.union(2, 4)).toBe(true);
+expect(uf.find(0)).toBe(0);
+expect(uf.find(1)).toBe(0);
+expect(uf.find(2)).toBe(0);
+expect(uf.find(3)).toBe(0);
+expect(uf.find(4)).toBe(0);
+```
