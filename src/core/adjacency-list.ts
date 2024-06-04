@@ -304,6 +304,79 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
     };
 
     /**
+     * Kahn’s Algorithm: This algorithm uses an in-degree approach
+     * and is based on repeatedly removing nodes with no incoming edges.
+     * It only applies to directed acyclic graphs (DAGs).
+     * If the graph contains cycles, a topological sort is not possible.
+     */
+    const topologicalSortingKahn = () : Label[] => {
+        if(!options.isDirected) {
+            throw new Error('Topological sorting is applicable only to directed acyclic graphs.');
+        }
+
+        // Calculate the in-degree (number of incoming edges) for each node.
+        const incomingEdges = new Map<Label, number>(); // label ---> incoming edges count
+
+        for(const [label, neighbours] of adjacencyList) {
+            if(!incomingEdges.has(label)){
+                incomingEdges.set(label, 0);
+            }
+
+            for(const neighbor of neighbours) {
+                const currentCount = incomingEdges.get(neighbor.label) ?? 0;
+                incomingEdges.set(neighbor.label, currentCount + 1);
+            }
+        }
+
+        // Initialize a queue and enqueue all nodes with in-degree 0.
+        const queue: Label[] = [];
+
+        for (const [label, degree] of incomingEdges) {
+            if (degree === 0) {
+                queue.push(label);
+            }
+        }
+
+        const topologicalOrder: Label[] = [];
+        let count = 0;
+
+        while(queue.length > 0) {
+
+            // Remove a node from the queue
+            // and add it to the topological order.
+            const label = queue.shift();
+            if(!label) continue;
+
+            topologicalOrder.push(label);
+
+            // Decrease the in-degree of all its neighboring nodes by 1.
+            // If the in-degree of a neighboring node becomes 0, enqueue it.
+            const neighbours = adjacencyList.get(label) || [];
+            for (const neighbor of neighbours) {
+
+                const currentCount = (incomingEdges.get(label) ?? 0) - 1;
+                incomingEdges.set(label, currentCount);
+
+                if(currentCount <= 0) {
+                    queue.push(neighbor.label);
+                }
+            }
+
+            count++;
+        }
+
+        // If all nodes are processed, the topological order is complete.
+        // If there are still nodes with non-zero in-degree,
+        // the graph contains a cycle.
+        if (count !== adjacencyList.size) {
+            throw new Error('Graph has a cycle.');
+        }
+        else {
+            return topologicalOrder;
+        }
+    };
+
+    /**
      * Entry Point.
      */
     (() => {
@@ -330,5 +403,6 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
 
         hasCycle,
         findShortestPathDijkstra,
+        topologicalSortingKahn,
     };
 };

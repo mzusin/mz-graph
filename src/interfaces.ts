@@ -6,6 +6,7 @@ export interface IVertex<T> {
 }
 
 export type AdjacencyList<T> = Map<Label, IVertex<T>[]>;
+
 export interface IGraph<T> {
     addVertex: (label: Label) => void;
     getVertex: (label: Label) => IVertex<T>[]|null;
@@ -19,6 +20,8 @@ export interface IGraph<T> {
 
     hasCycle: () => boolean;
     findShortestPathDijkstra: (startLabel: Label) => Map<Label, number>;
+
+    topologicalSortingKahn: () => Label[];
 }
 
 export type AdjacencyMatrix<T> = T[][];
