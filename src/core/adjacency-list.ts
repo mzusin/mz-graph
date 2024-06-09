@@ -268,7 +268,7 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
             distances.set(vertex, Infinity);
         }
 
-        // Initialize start node as 0.
+        // Distance from source to itself is always 0.
         distances.set(startLabel, 0);
 
         // ------------------------------------------
@@ -308,6 +308,15 @@ export const graph = <T>(options: IAdjacencyListOptions<T>) : IGraph<T> => {
      * and is based on repeatedly removing nodes with no incoming edges.
      * It only applies to directed acyclic graphs (DAGs).
      * If the graph contains cycles, a topological sort is not possible.
+     *
+     * Usage:
+     * ------
+     * This sort is used when some tasks need to be done before others.
+     * Think of the nodes as your various projects, and the arrows (or edges) between them represent the dependencies.&#x20;
+     * An arrow from Task A to Task B means you’ve got to finish Task A before you can tackle Task B.
+     * Topological sorting is like creating a to-do list where every task appears before any tasks that depend on it.
+     * Program build dependencies.
+     * It can discover circles.
      */
     const topologicalSortingKahn = () : Label[] => {
         if(!options.isDirected) {

@@ -30,7 +30,7 @@ export const unionFind = (size: number) : IUnionFind => {
     const rank: number[] = [];
 
     const init = () => {
-        for(let i=0; i<size; i++) {
+        for(let i=0; i<=size; i++) {
             parent.push(i);
             rank.push(1);
         }
@@ -55,6 +55,11 @@ export const unionFind = (size: number) : IUnionFind => {
 
         // Parent of the root is itself.
         if (parent[node] !== node) { // we not yet reached the root of the tree.
+
+            // "find" function not only finds the root of the given node
+            // but also performs path compression,
+            // which modifies the parent array
+            // to make future operations more efficient.
             parent[node] = find(parent[node]);
         }
 
